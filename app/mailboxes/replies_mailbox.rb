@@ -3,7 +3,10 @@ class RepliesMailbox < ApplicationMailbox
   def process
     return if user.nil?
 
-    discussion.comments
+    discussion.comments.create(
+      user: user,
+      body: mail.decoded
+    )
   end
 
   def user
