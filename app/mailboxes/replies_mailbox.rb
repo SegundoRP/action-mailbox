@@ -1,6 +1,9 @@
 class RepliesMailbox < ApplicationMailbox
+  MATCHER = /reply-(.+)@reply.example.com/i
   def process
     return if user.nil?
+
+    discussion.comments
   end
 
   def user
@@ -12,7 +15,8 @@ class RepliesMailbox < ApplicationMailbox
   end
 
   def discussion_id
-
+    recipient = mail.recipients.find{ |r| MATCHER.match?(r)}
+    recipient[MATCHER, 1]
   end
 
   def ensure_user
